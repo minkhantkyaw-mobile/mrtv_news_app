@@ -1,8 +1,7 @@
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mrtv_new_app_sl/viewModels/video_dialog_controller.dart';
-import 'package:video_player/video_player.dart';
+import 'package:mrtv_new_app_sl/viewModels/video/video_viewmodel/video_dialog_controller.dart';
 
 class VideoDialogWidget extends StatelessWidget {
   final String videoUrl;
@@ -22,9 +21,11 @@ class VideoDialogWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<VideoDialogController>();
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     return Dialog(
       insetPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 60),
-      backgroundColor: Colors.white,
+      backgroundColor: theme.dialogBackgroundColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -34,9 +35,7 @@ class VideoDialogWidget extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
+                style: theme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
                 textAlign: TextAlign.center,
@@ -69,7 +68,7 @@ class VideoDialogWidget extends StatelessWidget {
                   body != 'null' && body.isNotEmpty
                       ? body
                       : "There is no detail Available !!!",
-                  style: TextStyle(color: Colors.black, fontSize: 18),
+                  style: theme.textTheme.bodyLarge,
                   textAlign: TextAlign.center,
                 ),
               ),

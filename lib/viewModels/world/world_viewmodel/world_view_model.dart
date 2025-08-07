@@ -1,12 +1,10 @@
 import 'package:get/get.dart';
-import 'package:mrtv_new_app_sl/models/audio_new_model.dart';
+import 'package:mrtv_new_app_sl/models/world_new_model.dart';
 import 'package:mrtv_new_app_sl/services/api_state.dart';
 import 'package:mrtv_new_app_sl/services/http_provider.dart';
-import 'package:mrtv_new_app_sl/services/http_service.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class RadioViewModel extends GetxController {
-  // var videos = <VideoNewModel>[].obs;
+class WorldViewModel extends GetxController {
   // var records = <Records>[].obs;
   List<Records> records = [];
   var status = ApiStatus.initial.obs;
@@ -14,11 +12,10 @@ class RadioViewModel extends GetxController {
 
   late HttpProvider _httpProvider;
 
-  RadioViewModel(this._httpProvider);
+  WorldViewModel(this._httpProvider);
 
   int _page = 1;
   int _totalPage = 1;
-
   @override
   void onInit() {
     fetchVideos();
@@ -47,16 +44,26 @@ class RadioViewModel extends GetxController {
     try {
       status.value = ApiStatus.loading;
       final result = await _httpProvider.getRequest(
-        'radio-news',
-        params: {"page": 2},
+        'world-news',
+        params: {"pageno": _page},
       );
+
       status.value = result.status;
+
+      // print(status.value);
       if (result.status == ApiStatus.success) {
         _totalPage = result.data['pagination']['total_pages'];
+        // print(_totalPage);
+        // records.value =
+        //     (result.data['records'] as List)
+        //         .map((e) => Records.fromJson(e))
+        //         .toList();
+
         List<Records> fetched =
             (result.data['records'] as List)
                 .map((e) => Records.fromJson(e))
                 .toList();
+        // print(fetched);
         if (isRefresh) {
           records = fetched;
           refreshController.refreshCompleted();
@@ -73,9 +80,6 @@ class RadioViewModel extends GetxController {
         else
           refreshController.loadFailed();
       }
-      // var json = await HttpService.getRequest('radio-news'); // JSON map
-      // var radioModel = RadioNewModel.fromJson(json);
-      // records.value = radioModel.records ?? [];
     } catch (e) {
       print("error: $e");
     }

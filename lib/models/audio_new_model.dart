@@ -1,3 +1,5 @@
+import 'package:mrtv_new_app_sl/models/base_record.dart';
+
 class RadioNewModel {
   bool? status;
   String? message;
@@ -57,14 +59,24 @@ class Pagination {
   }
 }
 
-class Records {
-  int? nid;
-  String? title;
-  String? postedDate;
-  String? image;
-  String? audio;
-  Null? video;
-  String? body;
+class Records extends BaseRecord {
+  @override
+  final int? nid;
+
+  @override
+  final String? title;
+
+  final String? audio;
+  final String? body;
+
+  @override
+  final String? video; // ← use this to hold audio too!
+
+  @override
+  final String? image;
+
+  @override
+  final String? postedDate;
 
   Records({
     this.nid,
@@ -76,14 +88,16 @@ class Records {
     this.body,
   });
 
-  Records.fromJson(Map<String, dynamic> json) {
-    nid = json['nid'];
-    title = json['title'];
-    postedDate = json['posted_date'];
-    image = json['image'];
-    audio = json['audio'];
-    video = json['video'];
-    body = json['body'];
+  factory Records.fromJson(Map<String, dynamic> json) {
+    return Records(
+      nid: json['nid'],
+      title: json['title'],
+      postedDate: json['posted_date'],
+      image: json['image'],
+      audio: json['audio'],
+      video: json['video'] ?? json['audio'], // 👈 fallback
+      body: json['body'],
+    );
   }
 
   Map<String, dynamic> toJson() {

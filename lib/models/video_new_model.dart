@@ -1,3 +1,5 @@
+import 'package:mrtv_new_app_sl/models/base_record.dart';
+
 class VideoNewModel {
   bool? status;
   String? message;
@@ -57,7 +59,7 @@ class Pagination {
   }
 }
 
-class Records {
+class Records extends BaseRecord {
   int? nid;
   String? postedDate;
   String? title;

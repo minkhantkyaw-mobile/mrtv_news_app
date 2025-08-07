@@ -1,11 +1,10 @@
 import 'package:get/get.dart';
-import 'package:mrtv_new_app_sl/models/video_new_model.dart';
+import 'package:mrtv_new_app_sl/models/local_new_model.dart';
 import 'package:mrtv_new_app_sl/services/api_state.dart';
 import 'package:mrtv_new_app_sl/services/http_provider.dart';
-import 'package:mrtv_new_app_sl/services/http_service.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class VideoViewModel extends GetxController {
+class LocalViewModel extends GetxController {
   // var records = <Records>[].obs;
   List<Records> records = [];
   var status = ApiStatus.initial.obs;
@@ -13,7 +12,7 @@ class VideoViewModel extends GetxController {
 
   late HttpProvider _httpProvider;
 
-  VideoViewModel(this._httpProvider);
+  LocalViewModel(this._httpProvider);
 
   int _page = 1;
   int _totalPage = 1;
@@ -45,7 +44,7 @@ class VideoViewModel extends GetxController {
     try {
       status.value = ApiStatus.loading;
       final result = await _httpProvider.getRequest(
-        'national-news',
+        'local-news',
         params: {"pageno": _page},
       );
 
@@ -85,17 +84,4 @@ class VideoViewModel extends GetxController {
       print("error: $e");
     }
   }
-
-  // void getMore(int totalPage) async {
-  //   if (isRefresh) {
-  //       _page = 1;
-  //     } else {
-  //       if (_page >= _totalPage) {
-  //         print("Total Pages: $_totalPage");
-  //         refreshController.loadNoData();
-  //         return;
-  //       }
-  //       _page++;
-  //     }
-  // }
 }
